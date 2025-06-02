@@ -13,7 +13,8 @@ async def get_user_keyboard():
     # Asosiy keyboard tugmalari
     users_keyboards = [
         [
-            InlineKeyboardButton(text="📊 Maning statistikam", callback_data='my_statistic')
+            InlineKeyboardButton(text="ℹ️ Qo'llanma", callback_data='getGuide'),
+            InlineKeyboardButton(text="📞 Murojaat", callback_data="appeal")
         ]
     ]
 
@@ -40,7 +41,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         quote = quotes()
         quote_message = f"<b>{quote['quote']}</b>\n\n<i>{quote['author']}</i>"
-        await context.bot.send_message(chat_id=update.effective_user.id, text=f"<b>Hello 👋</b>\n\n<blockquote>{quote_message}</blockquote>", parse_mode="html", reply_markup=reply_markup) 
+        await context.bot.send_message(chat_id=update.effective_user.id, text=f"<b>Hello 👋\nComing soon</b>\n\n<blockquote>{quote_message}</blockquote>", parse_mode="html", reply_markup=reply_markup) 
     return ConversationHandler.END
 
 

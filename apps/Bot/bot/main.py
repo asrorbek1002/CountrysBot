@@ -2,7 +2,7 @@ from ..MandatoryChannel import AddChannel_ConvHandler, MandatoryChannelOrGroupLi
 from ..BotCommands import start
 from ..BotAdmin import admin_menyu, add_admin_handler, the_first_admin, remove_admin_handler, AdminList
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler
-from ..BotHandler import send_msg_handler, bot_stats, edit_bot_bio, my_statistic
+from ..BotHandler import send_msg_handler, bot_stats, edit_bot_bio, InlineButton
 from datetime import datetime, timedelta
 from ..BotCommands.DownDB import DownlBD
 import random
@@ -58,7 +58,7 @@ def main():
     app.add_handler(CallbackQueryHandler(AdminList, pattern=r"^admin_list$"))
     app.add_handler(CallbackQueryHandler(MandatoryChannelOrGroupList, pattern=r"^mandatory_channel$"))
     app.add_handler(CallbackQueryHandler(start, pattern=r"^BackToMainMenu$"))
-    app.add_handler(CallbackQueryHandler(my_statistic, pattern=r"^my_statistic$"))   
+    app.add_handler(CallbackQueryHandler(InlineButton))
 
     
     # Schedule

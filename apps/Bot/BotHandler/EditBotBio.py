@@ -12,6 +12,6 @@ async def edit_bot_bio(update: Update | None, context: ContextTypes.DEFAULT_TYPE
         quote_message = f"{quote['quote']}\n\n{quote['author']}"
         await context.bot.set_my_short_description(quote_message)
     except Exception as e:
-        description = "Sizning shaxsiy yordamchingiz - faktlar, mantiqiy o'yinlar va ko'proq imkoniyatlar bilan"
+        description = "Dunyodagi barcha davlatlar haqida ma'lumot beruvchi telegram bot"
         await context.bot.set_my_short_description(description)
 
