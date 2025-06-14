@@ -21,6 +21,10 @@ admin_keyboard_list = [
     ],
     [
         InlineKeyboardButton(text="🗒 Kanal/Guruh ro'yxati", callback_data="mandatory_channel")
+    ],
+    [
+        InlineKeyboardButton(text="Qo'llanma", callback_data="AdminGuide"),
+        InlineKeyboardButton(text="📞 Murojaatlar", callback_data="AdminAppeal")
     ]
 ]
 Admin_keyboard = InlineKeyboardMarkup(admin_keyboard_list)

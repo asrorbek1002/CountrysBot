@@ -3,13 +3,12 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from ..utils import save_user_to_db, quotes
 from ..models.TelegramBot import TelegramUser
 from ..decorators import typing_action, mandatory_channel_required
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardRemove
 
 
 async def get_user_keyboard():
     """Bot uchun inline keyboardni dinamik yaratish."""
     # Asinxron holda guide ma'lumotini olish
-
     # Asosiy keyboard tugmalari
     users_keyboards = [
         [
@@ -29,6 +28,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Botni ishga tushirish uchun komanda.
     """
+    remove = ReplyKeyboardRemove()
+
     data = update.effective_user
     if update.callback_query:
         await update.callback_query.answer("Asosiy menyu")
@@ -37,11 +38,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     is_save = await save_user_to_db(data)
     admin_id = await TelegramUser.get_admin_ids()
     if update.effective_user.id in admin_id:
-        await context.bot.send_message(chat_id=update.effective_user.id, text="<b>Main Menu 🖥\n<tg-spoiler>/admin_panel</tg-spoiler></b>", reply_markup=reply_markup, parse_mode="html")
-    else:
-        quote = quotes()
-        quote_message = f"<b>{quote['quote']}</b>\n\n<i>{quote['author']}</i>"
-        await context.bot.send_message(chat_id=update.effective_user.id, text=f"<b>Hello 👋\nComing soon</b>\n\n<blockquote>{quote_message}</blockquote>", parse_mode="html", reply_markup=reply_markup) 
+        await context.bot.send_message(chat_id=update.effective_user.id, text="<b>Main Menu 🖥\n<tg-spoiler>/admin_panel</tg-spoiler></b>", reply_markup=remove, parse_mode="html")
+    quote = quotes()
+    quote_message = f"<b>{quote['quote']}</b>\n\n<i>{quote['author']}</i>"
+    await context.bot.send_message(chat_id=update.effective_user.id, text=f"<b>Hello 👋\nComing soon</b>\n\n<blockquote>{quote_message}</blockquote>", parse_mode="html", reply_markup=reply_markup) 
     return ConversationHandler.END
 
 

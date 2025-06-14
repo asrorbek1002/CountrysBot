@@ -1,8 +1,8 @@
 from ..MandatoryChannel import AddChannel_ConvHandler, MandatoryChannelOrGroupList, start_delete_mandatory, delete_mandatory
 from ..BotCommands import start
 from ..BotAdmin import admin_menyu, add_admin_handler, the_first_admin, remove_admin_handler, AdminList
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler
-from ..BotHandler import send_msg_handler, bot_stats, edit_bot_bio, InlineButton
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters
+from ..BotHandler import send_msg_handler, bot_stats, edit_bot_bio, InlineButton, guide, guide_create_conv, guide_update_conv, guide_delete_conv, AdminGuide, appeal_conv, list_appeals, show_appeal_detail, handle_admin_reply, all_appeals
 from datetime import datetime, timedelta
 from ..BotCommands.DownDB import DownlBD
 import random
@@ -46,6 +46,11 @@ def main():
     app.add_handler(add_admin_handler)
     app.add_handler(remove_admin_handler)
     app.add_handler(AddChannel_ConvHandler)
+    app.add_handler(guide_create_conv)
+    app.add_handler(guide_update_conv)
+    app.add_handler(guide_delete_conv)
+    app.add_handler(appeal_conv)
+
 
 
     # Inline hanlder
@@ -58,9 +63,16 @@ def main():
     app.add_handler(CallbackQueryHandler(AdminList, pattern=r"^admin_list$"))
     app.add_handler(CallbackQueryHandler(MandatoryChannelOrGroupList, pattern=r"^mandatory_channel$"))
     app.add_handler(CallbackQueryHandler(start, pattern=r"^BackToMainMenu$"))
+    app.add_handler(CallbackQueryHandler(guide, pattern=r"^getGuide$"))
+    app.add_handler(CallbackQueryHandler(AdminGuide, pattern=r"^AdminGuide$"))
+    app.add_handler(CallbackQueryHandler(list_appeals, pattern=r"^AdminAppeal$"))
+    app.add_handler(CallbackQueryHandler(show_appeal_detail, pattern=r"^appeal_detail:\d+$"))
+    app.add_handler(CallbackQueryHandler(all_appeals, pattern=r"^all_appeals$"))
     app.add_handler(CallbackQueryHandler(InlineButton))
 
-    
+    # Message handlers
+    app.add_handler(MessageHandler(filters.TEXT & filters.REPLY, handle_admin_reply))
+
     # Schedule
     if app.job_queue:  # job_queue mavjudligini tekshiramiz
         # Birinchi yangilanishni boshlash

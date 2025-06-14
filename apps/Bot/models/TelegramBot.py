@@ -1,16 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
-from time import sleep
 from django.db.models import Count
-from django.db import transaction
-from telegram import Bot
-from telegram.error import TelegramError
 from asgiref.sync import sync_to_async
-from django.contrib.auth.models import User
-from django.utils import timezone
-import uuid
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 # Create your models here.
 
 class TelegramUser(models.Model):
@@ -301,3 +292,42 @@ class Referral(models.Model):
 
     def __str__(self):
         return f"{self.referrer} → {self.referred_user}"
+
+
+class Guide(models.Model):
+    """
+    Foydalanuvchilarga yordam berish uchun qo'llanma
+    """
+    title = models.CharField(max_length=255, verbose_name="Sarlavha")
+    content = models.TextField(verbose_name="Kontent")
+    status = models.BooleanField(default=True, verbose_name="Holat")  # True - faol, False - nofaol
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Yaratilgan sana")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Yangilangan sana")
+
+    class Meta:
+        verbose_name = "Guide"
+        verbose_name_plural = "Guides"
+
+    def __str__(self):
+        return self.title
+    
+
+class Appeal(models.Model):
+    """
+    Foydalanuvchilarning murojaatlarini saqlash uchun model
+    """
+    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE, verbose_name="Foydalanuvchi")
+    admin = models.ForeignKey(
+        TelegramUser, on_delete=models.SET_NULL, null=True, blank=True, related_name="admin_appeals", verbose_name="Admin"
+    )
+    message_id = models.BigIntegerField(null=True, blank=True, verbose_name="Murojaat xabar ID")
+    message = models.TextField(verbose_name="Murojaat matni")
+    status = models.BooleanField(default=False, verbose_name="Holat")  # True - ko'rilgan, False - ko'rilmagan
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Yaratilgan sana")
+    
+    class Meta:
+        verbose_name = "Appeal"
+        verbose_name_plural = "Appeals"
+    
+    def __str__(self):
+        return f"Murojaat: {self.user.first_name} - {self.message[:50]}"

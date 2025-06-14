@@ -75,6 +75,36 @@ PAGES = [
             },
         ],
     },
+    {
+        "seperator": True,
+        "title": _("Bot qo'llanmalar"),
+        "items": [
+            {
+                "title": _("Bot Qo'llanmasi"),
+                "icon": "help",
+                "link": reverse_lazy("admin:Bot_guide_changelist"),
+                "permission": lambda request: user_has_group_or_permission(
+                    request.user, "view_guide"
+                ),
+            }
+
+        ],
+    },
+    {
+        "seperator": True,
+        "title": _("Murojaatlar matni"),
+        "items": [
+            {
+                "title": _("Murojaatlar"),
+                "icon": "support_agent",
+                "link": reverse_lazy("admin:Bot_appeal_changelist"),
+                "permission": lambda request: user_has_group_or_permission(
+                    request.user, "view_appeal"
+                ),
+            }
+
+        ],
+    },
 ]
 
 TABS = [
@@ -96,7 +126,7 @@ TABS = [
             {
                 "title": _("Bot Foydalanuvchilari"),
                 "link": reverse_lazy("admin:Bot_telegramuser_changelist"),
-            }
+            },
         ],
     },
 ]
